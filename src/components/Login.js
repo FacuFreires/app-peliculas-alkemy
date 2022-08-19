@@ -1,10 +1,10 @@
 import axios from 'axios';
 import swAlert from '@sweetalert/with-react';
-import { useNavigate } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 
 function Login() {
 
-    const navigate = useNavigate();
+    const history = useHistory();
 
     const submitHandler = e => {
         e.preventDefault();
@@ -47,34 +47,41 @@ function Login() {
             .post('http://challenge-react.alkemy.org', {email, password})
             .then(res => {
                 swAlert({
-                        title: "", 
-                        text: 'Acceso concedido', 
+                        title: 'Acceso concedido',
                         icon: 'success',
                         button: false,
                         timer: 2000
                 });
-                const tokenRecibido = res.data.token
-                localStorage.setItem('token', tokenRecibido);
-                navigate('/listado');
+                const tokenRecibido = res.data.token;
+                sessionStorage.setItem('token', tokenRecibido);
+                history.push("/listado");
             })
 
     };
 
+    let token = sessionStorage.getItem('token');
+
 
     return(
         <>
-        <h2>Identificarse</h2>
-        <form onSubmit={submitHandler}>
-            <label>
-                <span>Email:</span>
-                <input type="text" name="email" />
-            </label>
-            <label>
-                <span>Password:</span>
-                <input type="password" name="password" />
-            </label>
-            <button type="submit">Ingresar</button>
-        </form>
+            {token && <Redirect to="/listado"/>}
+        
+            <div className='row'>
+                <div className='col-6 offset-3'>
+                    <h2>Log In</h2>
+                    <form onSubmit={submitHandler}>
+                        <label className='form-label d-block mt-2'>
+                            <span>Correo Electrónico:</span> <br />
+                            <input className='form-control' type='text' name='email'/>
+                        </label>
+                        <label className='form-label d-block mt-2'>
+                            <span>Password:</span> <br />
+                            <input className='form-control' type='password' name='password'/>
+                        </label>
+                        <button className='btn btn-success mt-2' type='submit'>Ingresar</button>
+                    </form>
+                </div>
+            </div> 
         </>
     )
 }

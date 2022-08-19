@@ -4,7 +4,7 @@ function Footer() {
       <nav>
         <ul>
           <li>
-            <a href="http://instagram.com" rel="noopener noreferrer">
+            <a href="https://www.instagram.com/facufreires/" rel="noopener noreferrer">
               Visítanos en Instagram
             </a>
           </li>
